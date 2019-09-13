@@ -30,8 +30,6 @@ using namespace boost::algorithm;
 typedef long LONGINT;
 
 
-
-
 /*
     Copyright (C) 2019, Rafael Godoy, <0x67rafael@protonmail.com> .
 
@@ -79,37 +77,30 @@ typedef long LONGINT;
 
 
 
-static void banner_rddwebc(void){
-
+static void banner_rddwebc(void) {
     printf("\033[1;31m\n\t========= <RDDWEBC WEB CRAWLING> [FOCUSED ON DIRECTORIES]  =========\n"
-		           "\033[0;37m\n\t"
-		           "Copyright (C) 2019, Rafael Godoy, <0x67rafael@protonmail.com>\033[0m\n\n");
-
+           "\033[0;37m\n\t"
+           "Copyright (C) 2019, Rafael Godoy, <0x67rafael@protonmail.com>\033[0m\n\n");
 }
 
 
-static void features_rddwebc(void){
-
-
+static void features_rddwebc(void) {
     printf("[*] FEATURES RDDWEBC:\n"
-                 "\t\t\t BRUTEFORCING SEARCH USING WORDLIST\n"
-                 "\t\t\t MANUAL SEARCH\n"
-                 "\t\t\t USER-AGENT CHOICE\n\n\n");
-
+           "\t\t\t BRUTEFORCING SEARCH USING WORDLIST\n"
+           "\t\t\t MANUAL SEARCH\n"
+           "\t\t\t USER-AGENT CHOICE\n\n\n");
 }
 
 
-static string write_log(string data_log){
-
+static string write_log(string data_log) {
     string home_user = getenv("HOME");
 
     home_user.append("/.rddwebc_logs/");
 
-    if(!filesystem::create_directory(home_user)){
+    if (!filesystem::create_directory(home_user)) {
         // fprintf(stderr, "[!] CANNOT CREATE LOGS DIRECTORY\n");
         return "FUNC_BAD";
     }
-
 
     home_user.append("rddwebc_logs.txt");
 
@@ -117,7 +108,7 @@ static string write_log(string data_log){
 
     w_log.open(home_user, ios_base::app);
 
-    if(!w_log.is_open()){
+    if (!w_log.is_open()) {
         // fprintf(stderr, "[!] CANNOT WRITE TO LOG FILE..\n");
         return "FUNC_BAD";
     }
@@ -131,30 +122,26 @@ static string write_log(string data_log){
 }
 
 
-
-
-static list<string> bforce_wordlist(const string &mode, const string &path){
-
-
-    if(mode.compare("0") == 0){
-        list<string> _path;
+static list <string> bforce_wordlist(const string &mode, const string &path) {
+    if (mode.compare("0") == 0) {
+        list <string> _path;
         _path.push_back(path);
-        return _path;
 
-    }else{
+        return _path;
+    } else {
         fstream path_reading;
         path_reading.open(path, ios_base::in);
 
-        if(!path_reading.is_open()){
+        if (!path_reading.is_open()) {
             fprintf(stderr, "[!] FAILURE TO OPEN WORDLIST: %s\n",
-                     strerror(errno));
+                    strerror(errno));
             _Exit(1);
         }
 
-        list<string> w_list;
+        list <string> w_list;
         string tmp_buf;
 
-        while(getline(path_reading, tmp_buf))
+        while (getline(path_reading, tmp_buf))
             w_list.push_back(tmp_buf);
 
         tmp_buf.clear();
@@ -162,17 +149,14 @@ static list<string> bforce_wordlist(const string &mode, const string &path){
 
         return w_list;
     }
-
 }
 
 
 size_t non_verbose(void *buffer, size_t size,
-                   size_t nmemb, void *userp)
-                   {return size * nmemb;}
+                   size_t nmemb, void *userp) { return size * nmemb; }
 
 
-
-static LONGINT rddwebc_get(const string &url, const string &user_agent){
+static LONGINT rddwebc_get(const string &url, const string &user_agent) {
 
     CURL *rddwebc;
     CURLcode response_code;
@@ -181,49 +165,47 @@ static LONGINT rddwebc_get(const string &url, const string &user_agent){
     curl_global_init(CURL_GLOBAL_DEFAULT);
 
     rddwebc = curl_easy_init();
-    if(rddwebc){
+    if (rddwebc) {
         curl_easy_setopt(rddwebc, CURLOPT_USERAGENT, user_agent.c_str());
         curl_easy_setopt(rddwebc, CURLOPT_URL, url.c_str());
         curl_easy_setopt(rddwebc, CURLOPT_NOBODY, 1L);
         curl_easy_setopt(rddwebc, CURLOPT_WRITEFUNCTION, non_verbose);
 
 
-
 #ifdef SKIP_PEER_VERIFICATION
 
-    /*
-     * If you want to connect to a site who isn't using a certificate that is
-     * signed by one of the certs in the CA bundle you have, you can skip the
-     * verification of the server's certificate. This makes the connection
-     * A LOT LESS SECURE.
-     *
-     * If you have a CA cert for the server stored someplace else than in the
-     * default bundle, then the CURLOPT_CAPATH option might come handy for
-     * you.
-     */
+        /*
+         * If you want to connect to a site who isn't using a certificate that is
+         * signed by one of the certs in the CA bundle you have, you can skip the
+         * verification of the server's certificate. This makes the connection
+         * A LOT LESS SECURE.
+         *
+         * If you have a CA cert for the server stored someplace else than in the
+         * default bundle, then the CURLOPT_CAPATH option might come handy for
+         * you.
+         */
 
-        curl_easy_setopt(rddwebc, CURLOPT_SSL_VERIFYPEER, 0L);
+            curl_easy_setopt(rddwebc, CURLOPT_SSL_VERIFYPEER, 0L);
 
 #endif
 
 
-
 #ifdef SKIP_HOSTNAME_VERIFICATION
 
-    /*
-     * If the site you're connecting to uses a different host name that what
-     * they have mentioned in their server certificate's commonName (or
-     * subjectAltName) fields, libcurl will refuse to connect. You can skip
-     * this check, but this will make the connection less secure.
-     */
+        /*
+         * If the site you're connecting to uses a different host name that what
+         * they have mentioned in their server certificate's commonName (or
+         * subjectAltName) fields, libcurl will refuse to connect. You can skip
+         * this check, but this will make the connection less secure.
+         */
 
-        curl_easy_setopt(rddwebc, CURLOPT_SSL_VERIFYHOST, 0L);
+            curl_easy_setopt(rddwebc, CURLOPT_SSL_VERIFYHOST, 0L);
 
 #endif
 
         response_code = curl_easy_perform(rddwebc);
 
-        if(response_code != CURLE_OK){
+        if (response_code != CURLE_OK) {
             string curl_error = (curl_easy_strerror(response_code));
             algorithm::to_upper(curl_error);
             fprintf(stderr, "[!] RDDWEBC ERROR: %s\n", curl_error.c_str());
@@ -234,104 +216,84 @@ static LONGINT rddwebc_get(const string &url, const string &user_agent){
 
         curl_easy_getinfo(rddwebc, CURLINFO_RESPONSE_CODE, &http_responde_code);
 
-
         curl_easy_cleanup(rddwebc);
     }
 
     curl_global_cleanup();
 
     return http_responde_code;
-
 }
 
 
+int main(void) {
 
-
-int main(void){
-
-    try{
+    try {
         banner_rddwebc();
         features_rddwebc();
 
         string url, mode, stringorwordlist, agent;
 
-        do{
+        do {
             printf("[?] INSERT URL FOR CRAWLING: ");
             getline(cin, url);
             algorithm::trim(url);
+        } while (url.empty());
 
-        }while(url.empty());
-
-        do{
+        do {
             printf("[?] BRUTEFORCE OR MANUAL TESTING [BRUTEFORCE = 1 || MANUAL = 0]: ");
             getline(cin, mode);
             algorithm::trim(mode);
+        } while (mode.empty() || ((mode.compare("1") != 0) && (mode.compare("0") != 0)));
 
-        }while(mode.empty() ||
-               ((mode.compare("1") != 0) && (mode.compare("0") != 0)));
-
-        if(mode.compare("0") == 0){
-            do{
+        if (mode.compare("0") == 0) {
+            do {
                 printf("[?] INSERT STRING FOR MANUAL TESTING: ");
                 getline(cin, stringorwordlist);
                 algorithm::trim(stringorwordlist);
-
-            }while(stringorwordlist.empty());
-
-        }else if(mode.compare("1") == 0){
-            do{
+            } while (stringorwordlist.empty());
+        } else if (mode.compare("1") == 0) {
+            do {
                 printf("[?] INSERT WORDLIST FOR BRUTEFORCE: ");
                 getline(cin, stringorwordlist);
                 algorithm::trim(stringorwordlist);
 
-            }while(stringorwordlist.empty());
-
+            } while (stringorwordlist.empty());
         }
 
         printf("[?] INSERT USER-AGENT FOR CRAWLING: ");
         getline(cin, agent);
         algorithm::trim(agent);
 
-        if(agent.empty()){
+        if (agent.empty()) {
             agent = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)";
             printf("[!] USING USER-AGENT STANDARD MODE : %s\n", agent.c_str());
         }
 
-
-
-
-
-        list<string> _ulist = bforce_wordlist(mode, stringorwordlist);
+        list <string> _ulist = bforce_wordlist(mode, stringorwordlist);
 
         printf("\n\n[*] INITIATING THE REQUISITIONS..\n\n");
 
-        for(list<string>::iterator _ulist_it = _ulist.begin(); _ulist_it != _ulist.end(); _ulist_it++){
+        for (list<string>::iterator _ulist_it = _ulist.begin(); _ulist_it != _ulist.end(); _ulist_it++) {
+            string url_search = url;
 
-                string url_search = url;
+            url_search.append(("/" + *_ulist_it));
 
-                url_search.append(("/" + *_ulist_it));
+            LONGINT rddwebc_get_return = rddwebc_get(url_search, agent);
 
-                LONGINT rddwebc_get_return = rddwebc_get(url_search, agent);
+            string found_msg = "[***] URL REQUEST: " + url_search;
 
-                string found_msg = "[***] URL REQUEST: " + url_search;
+            found_msg.append(("\t\t\t[CODE " + (to_string(rddwebc_get_return)) + "]"));
 
-                found_msg.append(("\t\t\t\[CODE " + (to_string(rddwebc_get_return)) + "]"));
+            printf("%s\n\n", found_msg.c_str());
 
-                printf("%s\n\n", found_msg.c_str());
-
-
-                if(write_log(found_msg).compare("FUNC_OK") == 0)
-                   printf("[*] PLEASE CHECK THE LOG FILE ($HOME/.rddwebc_logs/rddwebc_logs.txt)\n");
-                else
-                    fprintf(stderr, "[!] FAILED CREATING LOGS\n");
-
+            if (write_log(found_msg).compare("FUNC_OK") == 0)
+                printf("[*] PLEASE CHECK THE LOG FILE ($HOME/.rddwebc_logs/rddwebc_logs.txt)\n");
+            else
+                fprintf(stderr, "[!] FAILED CREATING LOGS\n");
         }
-
-
-    }catch(capture_exception &fatal_error){
+    } catch (capture_exception &fatal_error) {
         fprintf(stderr, "[!!!!] ERROR: %s\n", fatal_error.what());
     }
-
 
     return 0;
 }
