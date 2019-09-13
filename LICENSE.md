@@ -1,7 +1,7 @@
 
     Copyright (C) 2019, Rafael Godoy, <0x67rafael@protonmail.com> .
     RDDWEBC are true Open Source/Free Software and meet all definitions as such. It means that you are free to modify and
-    redistribute all contents of the curl distributed archives.
+    redistribute all contents of the RDDWEBC distributed archives.
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
