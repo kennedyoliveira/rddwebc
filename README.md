@@ -1,25 +1,32 @@
-- (RDDWEBCrawling) - [Alpha Version]
+# (RDDWEBCrawling) - [Alpha Version]
 
-- Tested software on Debian, Ubuntu and Mint.
+// TODO add some description on what it does, what its purpose, what problem it solves etc
 
-- Requirements: libboost-all-dev, libcurl4-openssl-dev
-- Compiling: g++ -std=c++17 -m64 -fstack-protector-all rddwebc.cpp -o rddwebc -lcurl -lpthread -lboost_system -lboost_filesystem
+Tested on Debian, Ubuntu, and Mint.
 
-- Copyright (C) 2019, Rafael Godoy, <0x67rafael@protonmail.com> .
+## Requirements
+- libboost-all-dev
+- libcurl4-openssl-dev
 
-- RDDWEBC are true Open Source/Free Software and meet all definitions as such. 
-- It means that you are free to modify and redistribute all contents of the curl distributed archives.
-- This program is free software: you can redistribute it and/or modify
-- it under the terms of the GNU General Public License as published by
-- the Free Software Foundation, either version 3 of the License, or
-- (at your option) any later version.
+## How to build
+```
+g++ -std=c++17 -m64 -fstack-protector-all rddwebc.cpp -o rddwebc -lcurl -lpthread -lboost_system -lboost_filesystem
+```
 
-- This program is distributed in the hope that it will be useful,
-- but WITHOUT ANY WARRANTY; without even the implied warranty of
-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- GNU General Public License for more details.
+## License
+Copyright (C) 2019, Rafael Godoy, <0x67rafael@protonmail.com> .
 
-- You should have received a copy of the GNU General Public License
-- along with this program.  If not, see <https://www.gnu.org/licenses/>
+RDDWEBC is truly Open Source/Free Software and meets all definitions as such. 
+It means that you are free to modify and redistribute all contents of the curl distributed archives.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>
